@@ -30,17 +30,17 @@ BEGIN
 
 	set @begin_R = 16 * (CHARINDEX(SUBSTRING(@begin_hex, 1, 1), '0123456789abcdef') - 1) + (CHARINDEX(SUBSTRING(@begin_hex, 2, 1), '0123456789abcdef') - 1) 
     	set @begin_G = 16 * (CHARINDEX(SUBSTRING(@begin_hex, 3, 1), '0123456789abcdef') - 1) + (CHARINDEX(SUBSTRING(@begin_hex, 4, 1), '0123456789abcdef') - 1)
-    	set @begin_B = 16 * (CHARINDEX(SUBSTRING(@begin_hex, 5, 1), '0123456789abcdef') - 1) + (CHARINDEX(SUBSTRING(@begin_hex, 6, 1), '0123456789abcdef') - 1)
+	set @begin_B = 16 * (CHARINDEX(SUBSTRING(@begin_hex, 5, 1), '0123456789abcdef') - 1) + (CHARINDEX(SUBSTRING(@begin_hex, 6, 1), '0123456789abcdef') - 1)
 
 	set @end_R = 16 * (CHARINDEX(SUBSTRING(@end_hex, 1, 1), '0123456789abcdef') - 1) + (CHARINDEX(SUBSTRING(@end_hex, 2, 1), '0123456789abcdef') - 1)
     	set @end_G = 16 * (CHARINDEX(SUBSTRING(@end_hex, 3, 1), '0123456789abcdef') - 1) + (CHARINDEX(SUBSTRING(@end_hex, 4, 1), '0123456789abcdef') - 1)
     	set @end_B = 16 * (CHARINDEX(SUBSTRING(@end_hex, 5, 1), '0123456789abcdef') - 1) + (CHARINDEX(SUBSTRING(@end_hex, 6, 1), '0123456789abcdef') - 1) 
 
-	set @new_R = @end_R + (@percent * (@begin_R - @end_R))
-	set @new_G = @end_G + (@percent * (@begin_G - @end_G))
-	set @new_B = @end_B + (@percent * (@begin_B - @end_B))
+	set @new_R = @begin_R + (@percent * (@end_R - @begin_R))/100
+	set @new_G = @begin_G + (@percent * (@end_G - @begin_G))/100
+	set @new_B = @begin_B + (@percent * (@end_B - @begin_B))/100
 	
-	return '7f' + right(master.dbo.fn_varbintohexstr(CAST(@new_B AS varbinary)),2)
+	RETURN '7f' + right(master.dbo.fn_varbintohexstr(CAST(@new_B AS varbinary)),2)
 	+right(master.dbo.fn_varbintohexstr(CAST(@new_G AS varbinary)),2)
 	+right(master.dbo.fn_varbintohexstr(CAST(@new_R AS varbinary)),2)
 	
