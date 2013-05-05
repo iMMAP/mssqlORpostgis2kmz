@@ -1,6 +1,6 @@
 mssqlORpostgis2kmz
 ==================
-Converts mssql or postgis native spatial formats into KML, compresses and submits to Google Maps Api v3. This tool is designed to be simple to implement and once setup only requires that views on the database(s) are of a certain structure.  It is planned that this tool will also allow styles to be applied to the output layer.  
+Converts mssql or postgis native spatial formats into KML, compresses and submits to Google Maps Api v3 via KMZ. This tool is designed to be simple to implement and once setup only requires that views on the database(s) are of a certain structure.  It is planned that this tool will also allow styles to be applied to the output layer.  
 
 mssql demo:   
 http://54.243.146.241/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Syria&schema=dbo&viewname=testKML2   
