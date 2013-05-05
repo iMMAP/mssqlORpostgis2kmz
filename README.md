@@ -3,7 +3,7 @@ mssqlORpostgis2kmz
 mssql demo:   
 http://54.243.146.241/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Syria&schema=dbo&viewname=testKML2   
 
-postgis demo: 
+postgis demo:    
 http://54.243.146.241/google/googleKMZ.html?dbtype=postgis&dbname=postgres&schema=public&viewname=vIrishCounties  
   
 - MSSQL function which converts WKT format to KML.  
