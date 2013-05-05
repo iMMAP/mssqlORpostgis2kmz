@@ -23,9 +23,6 @@ BEGIN
 	DECLARE @searchindex int
 	DECLARE @foundindex int
 
-IF RIGHT(@wkt, 1) = ')'
-BEGIN	
-
 	----------------------------------------------------
 	-- MULTIPOLYGON 
 	----------------------------------------------------
@@ -33,7 +30,9 @@ BEGIN
 	BEGIN
 		set @kml = RIGHT(@wkt, LEN(@wkt) - 16)
 		set @kml = '<MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>' + @kml
+		set @kml = replace(@kml, ')), ((', ')),((')		
 		set @kml = replace(@kml, ')),((', '</coordinates></LinearRing></???BoundaryIs></Polygon><Polygon><outerBoundaryIs><LinearRing><coordinates>')	
+		set @kml = replace(@kml, '), (', '),(')		
 		set @kml = replace(@kml, '),(', '</coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><innerBoundaryIs><LinearRing><coordinates>')	
 		set @kml = left(@kml, LEN(@kml) - 3)
 		set @kml = @kml + '</coordinates></LinearRing></???BoundaryIs></Polygon></MultiGeometry>'
@@ -92,9 +91,10 @@ BEGIN
 		BEGIN
 
 			set @kml = @wkt
+			set @kml = replace(@kml, '), (', '),(')
 
 			IF CHARINDEX('),(',@kml) > 0  
-				BEGIN
+				BEGIN	
 					set @kml = replace(@kml, '),(', '</coordinates></LinearRing></outerBoundaryIs></Polygon><Polygon><innerBoundaryIs><LinearRing><coordinates>')
 					set @kml = RIGHT(@kml, LEN(@kml) - 10)
 					set @kml = left(@kml, LEN(@kml) - 2)
@@ -139,7 +139,7 @@ BEGIN
 	set @kml = replace(@kml, ',,', ' ')
 
 	--SELECT  @kml 
-END
+
 	-- Return the result of the function
 	RETURN @kml
 
