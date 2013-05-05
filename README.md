@@ -35,7 +35,7 @@ For Apache, add these lines to the httpd.conf file:
 
 For IIS - please Google it!  
 
-This solution requires you create views of the format:
+This solution requires you to create views of the format:
 
     postgis:
     CREATE OR REPLACE VIEW public."vIrishCounties" AS 
