@@ -6,6 +6,7 @@
 	$dbname = $_GET['dbname'];
 	$schema = $_GET['schema'];
 	$viewname = $_GET['viewname'];
+	$style = $_GET['style'];
 	$filename = date('ymdhis') . '.kmz';
 	$filedata = '<?xml version="1.0" encoding="UTF-8"?>
 	<kml xmlns="http://earth.google.com/kml/2.2">
@@ -45,6 +46,7 @@
 	while ($myrow = ($dbtype == 'mssql' ? mssql_fetch_row($result1) : pg_fetch_array($result1))) {
 
 		$fieldnumber = 0;
+		$colour = '';
 		while ($fieldnumber < $numfields) {
 
 			$fieldname = ($dbtype == 'mssql' ? mssql_field_name($result1, $fieldnumber) : pg_field_name($result1, $fieldnumber));
@@ -52,13 +54,26 @@
 			if ($fieldname === 'geom') { $geom = $myrow[$fieldnumber]; }
 			elseif ($fieldname === 'name') { $name = $myrow[$fieldnumber]; }
 			elseif ($fieldname === 'desc') { $desc = $myrow[$fieldnumber]; }
+			elseif ($fieldname === 'colour') { $colour = $myrow[$fieldnumber]; }
 			
 			$fieldnumber = $fieldnumber + 1;
 		}
 		
-		if (substr($geom, -1) === '>'){
+		if ($colour != '') {
 
-			$filedata = $filedata . '<Placemark><name>' . $name .'</name><description>' . $desc .'</description>' . $geom .'</Placemark>
+			if (strpos($geom, '<Polygon>') > -1) {
+				$styletext = '<Style><PolyStyle><color>' . $colour . '</color><colorMode>normal</colorMode><fill>1</fill><outline>1</outline></PolyStyle></Style>';
+			}elseif (strpos($geom, '<LineString>') > -1) {
+				$styletext = '<Style><LineStyle><color>' . $colour . '</color></LineStyle></Style>';
+			}elseif (strpos($geom, '<Point>') > -1) {
+				// nothing yet.....
+				$styletext = '';
+			}
+		}
+		
+		if (substr($geom, -1) === '>'){ 
+
+			$filedata = $filedata . '<Placemark><name>' . $name . '</name><description>' . $desc . '</description>' . $styletext . $geom . '</Placemark>
 			
 			';
 			
