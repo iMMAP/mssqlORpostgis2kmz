@@ -41,22 +41,22 @@ For IIS - please Google it!
 This solution requires you to create views of the format:
 
     postgis:
-    CREATE OR REPLACE VIEW public."vIrishCounties" AS 
-     SELECT st_askml(irl_adm1.geom) AS geom, irl_adm1.name_1 AS name, irl_adm1.type_1 AS "desc"
-      FROM irl_adm1;
+      CREATE OR REPLACE VIEW public."vIrishCounties" AS 
+       SELECT st_askml(irl_adm1.geom) AS geom, irl_adm1.name_1 AS name, irl_adm1.type_1 AS "desc"
+        FROM irl_adm1;
 
     mssql (coloring features based on value within a range):
-    SELECT dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, 
-           District AS name, 
-           'Households in 2012: ' + CAST(Households2012 AS nvarchar(100)) AS [desc], 
-           dbo.GetColourRampVal('0EF016'
-                               ,'FF0066'
-                               ,((SELECT MAX(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB) 
-                                -(SELECT MIN(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB)
-                                ) / ( Households2012 
-                                     - (SELECT MIN(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB) + 1)
-                               ) AS colour
-    FROM dbo.dd_NfiDistributions_qryDistrict_WKB WHERE (Households2012 IS NOT NULL)
+      SELECT dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, 
+             District AS name, 
+             'Households in 2012: ' + CAST(Households2012 AS nvarchar(100)) AS [desc], 
+             dbo.GetColourRampVal('0EF016'
+                                 ,'FF0066'
+                                 ,((SELECT MAX(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB) 
+                                  -(SELECT MIN(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB)
+                                  ) / ( Households2012 
+                                       - (SELECT MIN(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB) + 1)
+                                 ) AS colour
+      FROM dbo.dd_NfiDistributions_qryDistrict_WKB WHERE (Households2012 IS NOT NULL)
 
 Also note you need to set write permissions (chmod 777) to allow the temp file to be created and deleted
 
