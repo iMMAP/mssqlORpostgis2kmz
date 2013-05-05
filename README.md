@@ -1,6 +1,8 @@
 mssqlORpostgis2kmz
 ==================
-Converts mssql or postgis native spatial formats into KML, compresses and submits to Google Maps Api v3 via KMZ. This tool is designed to be simple to implement and once setup only requires that views on the database(s) are of a certain structure.  It is planned that this tool will also allow styles to be applied to the output layer.  
+Converts mssql or postgis native spatial formats into KML, compresses and submits to Google Maps Api v3 via KMZ. 
+This tool is designed to be simple to implement and once setup only requires that views on the database(s) 
+are of a certain structure.  This tool will also allow styles to be applied to the output layer.  
 
 mssql demo:   
 http://54.243.146.241/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Syria&schema=dbo&viewname=testKML2   
@@ -43,9 +45,15 @@ This solution requires you to create views of the format:
       FROM irl_adm1;
 
     mssql:
-    CREATE OR REPLACE VIEW dbo.testKML2 AS
-     SELECT   dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, AdminLev_3 AS name, AdminLev_2 AS [desc]
-      FROM     dbo.dd_Demographics_ddAdmin3_FEA
+    SELECT  dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, 
+    District AS name, 
+    'Households in 2012: ' + CAST(Households2012 AS nvarchar(100)) AS description, 
+    dbo.GetColourRampVal('000000', 
+                         'ffffff', 
+                         (	SELECT MAX(Households2012) AS Expr11 
+                            FROM dbo.dd_NfiDistributions_qryDistrict_WKB) / Households2012
+                         ) AS colour
+    FROM  dbo.dd_NfiDistributions_qryDistrict_WKB AS dd_NfiDistributions_qryDistrict_WKB_1
 
 Also note you need to set write permissions (chmod 777) to allow the temp file to be created and deleted
 
