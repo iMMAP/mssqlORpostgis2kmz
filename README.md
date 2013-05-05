@@ -45,7 +45,7 @@ This solution requires you to create views of the format:
        SELECT st_askml(irl_adm1.geom) AS geom, irl_adm1.name_1 AS name, irl_adm1.type_1 AS "desc"
         FROM irl_adm1;
 
-    mssql (coloring features based on value within a range):
+    mssql (coloring features based on value within a range green -> red):
       SELECT dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, 
              District AS name, 
              'Households in 2012: ' + CAST(Households2012 AS nvarchar(100)) AS [desc], 
