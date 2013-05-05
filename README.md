@@ -43,7 +43,6 @@ This solution requires you create views of the format:
     mssql:
     SELECT   dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, AdminLev_3 AS name, AdminLev_2 AS [desc]
     FROM     dbo.dd_Demographics_ddAdmin3_FEA
-    ORDER BY name
 
 Also note you need to set write permissions (chmod 777) to allow the temp file to be created and deleted
 
