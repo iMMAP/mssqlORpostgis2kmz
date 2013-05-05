@@ -18,7 +18,7 @@ To setup MSSQL support on linux:
     Note if you are loosing polygons it might be due to the text size limitation in the provider.
     If so, you should increase your text size (I made mine x10 to 645120) in /etc/freetds/freetds.conf 
 
-    Test using:
+    Test the mssql function using:
 
       SELECT 
        WKB.STAsText() as WKT, 
