@@ -1,4 +1,4 @@
-DROP FUNCTION dbo.GetColourRampVal
+--DROP FUNCTION dbo.GetColourRampVal
 
 SET ANSI_NULLS ON
 GO
