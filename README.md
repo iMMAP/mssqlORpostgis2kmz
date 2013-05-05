@@ -6,6 +6,7 @@ are of a certain structure.  This tool will also allow styles to be applied to t
 
 mssql demo:   
 http://54.243.146.241/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Syria&schema=dbo&viewname=testKML2   
+http://54.243.146.241/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Atlantis&schema=dbo&viewname=testKMLStyles   
 
 postgis demo:    
 http://54.243.146.241/google/googleKMZ.html?dbtype=postgis&dbname=postgres&schema=public&viewname=vIrishCounties  
@@ -44,16 +45,18 @@ This solution requires you to create views of the format:
      SELECT st_askml(irl_adm1.geom) AS geom, irl_adm1.name_1 AS name, irl_adm1.type_1 AS "desc"
       FROM irl_adm1;
 
-    mssql:
-    SELECT  dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, 
-    District AS name, 
-    'Households in 2012: ' + CAST(Households2012 AS nvarchar(100)) AS description, 
-    dbo.GetColourRampVal('000000', 
-                         'ffffff', 
-                         (	SELECT MAX(Households2012) AS Expr11 
-                            FROM dbo.dd_NfiDistributions_qryDistrict_WKB) / Households2012
-                         ) AS colour
-    FROM  dbo.dd_NfiDistributions_qryDistrict_WKB AS dd_NfiDistributions_qryDistrict_WKB_1
+    mssql (coloring features based on value within a range):
+    SELECT dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, 
+           District AS name, 
+           'Households in 2012: ' + CAST(Households2012 AS nvarchar(100)) AS [desc], 
+           dbo.GetColourRampVal('0EF016'
+                               ,'FF0066'
+                               ,((SELECT MAX(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB) 
+                                -(SELECT MIN(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB)
+                                ) / ( Households2012 
+                                     - (SELECT MIN(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB) + 1)
+                               ) AS colour
+    FROM dbo.dd_NfiDistributions_qryDistrict_WKB WHERE (Households2012 IS NOT NULL)
 
 Also note you need to set write permissions (chmod 777) to allow the temp file to be created and deleted
 
