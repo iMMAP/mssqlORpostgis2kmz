@@ -49,14 +49,10 @@ This solution requires you to create views of the format:
       SELECT dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, 
              District AS name, 
              'Households in 2012: ' + CAST(Households2012 AS nvarchar(100)) AS [desc], 
-             dbo.GetColourRampVal('0EF016'
-                                 ,'FF0066'
-                                 ,((SELECT MAX(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB) 
-                                  -(SELECT MIN(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB)
-                                  ) / ( Households2012 
-                                       - (SELECT MIN(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB) + 1)
-                                 ) AS colour
-      FROM dbo.dd_NfiDistributions_qryDistrict_WKB WHERE (Households2012 IS NOT NULL)
+             dbo.GetColourRampVal('ff0000', '00ff00', Households2012 * 100 / 
+                (SELECT MAX(Households2012) FROM dbo.dd_NfiDistributions_qryDistrict_WKB)) AS colour
+      FROM dbo.dd_NfiDistributions_qryDistrict_WKB 
+      WHERE (Households2012 IS NOT NULL)
 
 Also note you need to set write permissions (chmod 777) to allow the temp file to be created and deleted
 
