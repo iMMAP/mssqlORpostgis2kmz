@@ -6,7 +6,6 @@
 	$dbname = $_GET['dbname'];
 	$schema = $_GET['schema'];
 	$viewname = $_GET['viewname'];
-	$style = $_GET['style'];
 	$filename = date('ymdhis') . '.kmz';
 	$filedata = '<?xml version="1.0" encoding="UTF-8"?>
 	<kml xmlns="http://earth.google.com/kml/2.2">
