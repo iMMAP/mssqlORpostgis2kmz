@@ -9,7 +9,7 @@ http://playground.oasiswebservice.org/google/googleKMZ.html?dbtype=mssql&dbname=
 http://playground.oasiswebservice.org/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Atlantis&schema=dbo&viewname=testKMLStyles   
 
 postgis demo:    
-http://54.243.146.241/google/googleKMZ.html?dbtype=postgis&dbname=postgres&schema=public&viewname=vIrishCounties  
+http://playground.oasiswebservice.org/google/googleKMZ.html?dbtype=postgis&dbname=postgres&schema=public&viewname=vIrishCounties  
   
 - MSSQL function which converts WKT format to KML.  
 - PHP script which creates a KMZ file for download.  
