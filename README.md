@@ -5,8 +5,8 @@ This tool is designed to be simple to implement and once setup only requires tha
 are of a certain structure.  This tool will also allow styles to be applied to the output layer.  
 
 mssql demo:   
-http://54.243.146.241/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Syria&schema=dbo&viewname=testKML2   
-http://54.243.146.241/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Atlantis&schema=dbo&viewname=testKMLStyles   
+http://playground.oasiswebservice.org/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Syria&schema=dbo&viewname=testKML2   
+http://playground.oasiswebservice.org/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Atlantis&schema=dbo&viewname=testKMLStyles   
 
 postgis demo:    
 http://54.243.146.241/google/googleKMZ.html?dbtype=postgis&dbname=postgres&schema=public&viewname=vIrishCounties  
