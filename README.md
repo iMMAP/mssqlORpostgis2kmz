@@ -41,10 +41,14 @@ For IIS - please Google it!
 This solution requires you to create views of the format:
 
     postgis:
-      CREATE OR REPLACE VIEW public."vIrishCounties" AS 
-       SELECT st_askml(irl_adm1.geom) AS geom, irl_adm1.name_1 AS name, irl_adm1.type_1 AS "desc"
-        FROM irl_adm1;
-
+      SELECT  syr_adm1_kml.name_1 AS name, 
+              (('There are '::text || healthfac_all_byprov.count) || ' health facilities in '::text) || syr_adm1_kml.name_1::text AS "desc", 
+              syr_adm1_kml.kml1 AS geom, 
+              getcolourrampval('00ff00'::text, 'ff0000'::text, (healthfac_all_byprov.count * 100 / (( SELECT max(healthfac_all_byprov.count) AS max
+                FROM healthfac_all_byprov)))::integer) AS colour
+      FROM syr_adm1_kml, healthfac_all_byprov
+      WHERE syr_adm1_kml.gid = healthfac_all_byprov.gid;
+      
     mssql (coloring features based on value within a range green -> red):
       SELECT dbo.ConvertWKT2KML(WKB.STAsText()) AS geom, 
              District AS name, 
