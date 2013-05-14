@@ -8,8 +8,8 @@ mssql demo:
 http://playground.oasiswebservice.org/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Syria&schema=dbo&viewname=testKML2   
 http://playground.oasiswebservice.org/google/googleKMZ.html?dbtype=mssql&dbname=OasisDB-Atlantis&schema=dbo&viewname=testKMLStyles   
 
-postgis demo:    
-http://playground.oasiswebservice.org/google/googleKMZ.html?dbtype=postgis&dbname=postgres&schema=public&viewname=vIrishCounties  
+postgis demo showing data pulled from formhub.oasiswebservice.org using REST services:    
+http://playground.oasiswebservice.org/rest_services/viewmap.html
   
 - MSSQL function which converts WKT format to KML.  
 - PHP script which creates a KMZ file for download.  
