@@ -50,5 +50,5 @@ $BODY$
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION public.getcolourrampval(character, character, integer)
+ALTER FUNCTION public.getcolourrampval(text, text, integer)
   OWNER TO postgres;
