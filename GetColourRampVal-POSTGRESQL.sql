@@ -1,9 +1,10 @@
-﻿
-CREATE OR REPLACE FUNCTION GetColourRampVal
-	(	end_hex char(6),
-		begin_hex char(6),
-		percent int
-	) RETURNS text AS $$
+-- Function: public.getcolourrampval(character, character, integer)
+
+-- DROP FUNCTION public.getcolourrampval(character, character, integer);
+
+CREATE OR REPLACE FUNCTION public.getcolourrampval(end_hex text, begin_hex text, percent integer)
+  RETURNS text AS
+$BODY$
 
   DECLARE 
 	begin_R int;
@@ -16,6 +17,9 @@ CREATE OR REPLACE FUNCTION GetColourRampVal
 	new_G int;
 	new_B int;
 	new_hex text;
+	new_Rtext text;
+	new_Gtext text;
+	new_Btext text;
   BEGIN
 
 	begin_R = 16 * (strpos('0123456789abcdef',SUBSTRING(begin_hex, 1, 1)) - 1) + (strpos('0123456789abcdef',SUBSTRING(begin_hex, 2, 1)) - 1);
@@ -30,16 +34,21 @@ CREATE OR REPLACE FUNCTION GetColourRampVal
 	new_G = begin_G + (percent * (end_G - begin_G))/100;
 	new_B = begin_B + (percent * (end_B - begin_B))/100;
 
-	RETURN '7f' || right(cast( to_hex( new_B ) as varchar( 20 ) ),2)
-	|| right(cast( to_hex( new_G ) as varchar( 20 ) ),2)
-	|| right(cast( to_hex( new_R ) as varchar( 20 ) ),2);
+	new_hex = '7f'::text;
+	new_Rtext = to_hex( new_R )::text;
+	new_Gtext = to_hex( new_G )::text;
+	new_Btext = to_hex( new_B )::text;
+
+	if (length(new_Rtext) = 1) then  new_Rtext = '0'::text  || new_Rtext; end if;
+	if (length(new_Gtext) = 1) then  new_Gtext = '0'::text  || new_Gtext; end if;
+	if (length(new_Btext) = 1) then  new_Btext = '0'::text  || new_Btext; end if;
+
+	RETURN new_hex || new_Btext || new_Gtext || new_Rtext;
 	
   END;
   
-$$ LANGUAGE plpgsql;
-
-
-
-
-
- 
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.getcolourrampval(character, character, integer)
+  OWNER TO postgres;
