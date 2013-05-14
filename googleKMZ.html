@@ -44,7 +44,17 @@
 	}
 
 	function initialize() {
-	
+				
+		var mapOptions = {
+			center: new google.maps.LatLng(30,30),
+			zoom: 4,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		
+		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+		///////////////////////////////////////////////////
+		
 		var urlpath = document.URL;
 		urlpath = urlpath.substring(0,urlpath.indexOf('googleKMZ.html'));
 		urlpath = urlpath + 'getkmz.php'
@@ -54,19 +64,38 @@
 							+ '&viewname=' + QueryString.viewname 
 							+ '&style=' + QueryString.style 
 							+ '&' + guid(); 
-		//alert(urlpath);
-			
-		var mapOptions = {
-			center: new google.maps.LatLng(30,30),
-			zoom: 4,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		
-		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
 		var ctaLayer1 = new google.maps.KmlLayer({
-			url: urlpath
+			url: urlpath,
+			preserveViewport: false,
+			map: map
 		});
-		ctaLayer1.setMap(map);
+		//ctaLayer1.setMap(map);
+		
+		///////////////////////////////////////////////////
+		
+		if (QueryString.viewname2 != '') {
+		
+			var urlpath2 = document.URL;
+				urlpath2 = urlpath2.substring(0,urlpath2.indexOf('googleKMZ.html'));
+				urlpath2 = urlpath2 + 'getkmz.php'
+						+ '?dbtype=' + QueryString.dbtype 
+						+ '&dbname=' + QueryString.dbname 
+						+ '&schema=' + QueryString.schema 
+						+ '&viewname=' + QueryString.viewname2 
+						+ '&style=' + QueryString.style 
+						+ '&' + guid(); 
+						
+			var ctaLayer2 = new google.maps.KmlLayer({
+				url: urlpath2,
+				preserveViewport: true
+			});
+			
+			google.maps.event.addListener(ctaLayer1, 'metadata_changed', function () {	
+					ctaLayer2.setMap(map); 
+				
+			});
+		}
 	}
 	
 	google.maps.event.addDomListener(window, 'load', initialize);
